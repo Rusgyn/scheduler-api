@@ -35,8 +35,24 @@ describe('template spec', () => {
 
   /* Second test */
   it("should edit an interview", () => {
+    cy.contains("Archie Cohen");
+    cy.get("[alt=Edit]")
+      .first()
+      .click({ force: true });//Forces the click action, even if the button is covered, not visible, or not in an interactable state.
+    cy.get("[data-testid=student-name-input]")
+      .clear() //Clearing the input field
+      .type("Lydia Miller-Jones");
+    
+    cy.get("[alt='Tori Malcolm']")
+      .click();
+    
+    cy.contains("Save")
+      .click();
 
-  })
+    //We need to wait until the Show component is displaying the student and interview names.
+    cy.contains(".appointment__card--show","Lydia Miller-Jones")
+    cy.contains(".appointment__card--show","Tori Malcolm")
+  });
 
 
 
