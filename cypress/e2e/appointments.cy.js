@@ -39,7 +39,7 @@ describe('template spec', () => {
     cy.get("[alt=Edit]")
       .first()
       .click({ force: true });//Forces the click action, even if the button is covered, not visible, or not in an interactable state.
-      
+
     cy.get("[data-testid=student-name-input]")
       .clear() //Clearing the input field
       .type("Lydia Miller-Jones");
@@ -50,11 +50,35 @@ describe('template spec', () => {
     cy.contains("Save")
       .click();
 
+    cy.contains("Saving...")
+      .should("exist");
+
     //We need to wait until the Show component is displaying the student and interview names.
     cy.contains(".appointment__card--show","Lydia Miller-Jones")
     cy.contains(".appointment__card--show","Tori Malcolm")
   });
 
+  it("should cancel an interview", () => {
+    cy.contains("Archie Cohen");
+    cy.get("[alt=Delete]")
+      .first()
+      .click({ force: true });//Forces the click action, even if the button is covered, not visible, or not in an interactable state.
+
+    cy.contains("Are you sure you would like to delete?")
+
+    cy.contains("Confirm")
+      .click()
+    
+    cy.contains("Deleting...")
+      .should("exist");
+    
+      cy.contains("Deleting...")
+      .should("not.exist");
+
+    //We need to wait until the Empty component shows
+    cy.contains(".appointment__card--show","Archie Cohen")
+        .should("not.exist")
+  });
 
 
 })
